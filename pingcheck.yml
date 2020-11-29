@@ -1,0 +1,59 @@
+---
+# This Playbook Checks Ping Result of Node
+#- hosts: "{{ hostvars['localhost']['host_info'] }}"
+- hosts: "{{ hostvars['localhost']['host_ip'] }}"
+  tasks:
+    - name: Set facts
+      set_fact:
+        host_reachable: false
+        host_exist: true
+      ignore_errors: true
+
+    - name: Validate connection and credentials of Linux Node
+      ping:
+      register: ping_result
+      ignore_errors: true
+      ignore_unreachable: true
+
+    - block:
+        - name: Able to reach Linux Node
+          set_fact:
+            host_reachable: true
+      when: '"ping" in ping_result and ping_result.ping=="pong"'
+      ignore_errors: true
+
+    - block:
+        - name: Unable to reach Linux Node
+          set_fact:
+            host_reachable: false
+      when: '"unreachable" in ping_result and ping_result.unreachable'
+      ignore_errors: true
+
+    - block:
+        - name: Validate connection and credentials of Windows Node
+          win_ping:
+          register: ping_result
+          ignore_errors: true
+          ignore_unreachable: true
+
+        - name: Able to reach Windows Node
+          set_fact:
+            host_reachable: true
+          when: '"ping" in ping_result and ping_result.ping=="pong"'
+          ignore_errors: true
+
+        - name: Set Connectivity Check Feedback
+          set_fact:
+            host_reachable: false
+            job_msg: >-
+              ""{{ IPAddress }}" is not reachable"
+          when: '"unreachable" in ping_result and ping_result.unreachable'
+          ignore_errors: true
+      when: 'not host_reachable'
+
+    - debug: var=group_names
+      ignore_errors: true
+    - debug: msg="{{ hostvars['localhost']['host_ip'] }}"
+      ignore_errors: true
+    - debug: msg="{{ ansible_facts['os_family'] }}"
+      ignore_errors: true

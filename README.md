@@ -1,2 +1,3 @@
-# slack-ansible
-slack to ansible integration
+# slack to ansible
+
+ launch ansible jobs from slack

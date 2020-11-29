@@ -1,0 +1,19 @@
+---
+# This is a Master Playbook that parses alert information
+# Author: B M Krishna Reddy Kolli
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Set facts for tasks playbooks from alert info
+      set_fact:
+        command: "{{ Command }}"
+        host_ip: "{{ IPAddress }}"
+      ignore_errors: true
+
+  ignore_unreachable: true
+- import_playbook: pingcheck.yml
+  ignore_errors: true
+
+- import_playbook: feedback.yml
+  ignore_errors: true
