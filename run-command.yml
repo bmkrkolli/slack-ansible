@@ -19,7 +19,7 @@
       when: (os_type != "Windows")
       ignore_errors: true
 
-     - name: "Set job_msg"
+    - name: "Set job_msg"
       set_fact:
         job_msg: >-
           Output of "{{ command }}" on {{ hostvars['localhost']['host_info'] }}:{{ os_type }} 
