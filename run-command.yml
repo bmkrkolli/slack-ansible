@@ -21,12 +21,12 @@
 
     - name: "Set job_msg"
       set_fact:
-        job_msg: "{{ os_type }} {{ winl1_info.stdout }}"
+        job_msg: "Platform:{{ os_type }}; Output:{{ winl1_info.stdout }}"
       when: os_type == "Windows"
       ignore_errors: true
 
     - name: "Set job_msg"
       set_fact:
-        job_msg: "{{ os_type }} {{ linuxl1_info.stdout }}"
+        job_msg: "Platform:{{ os_type }}; Output:{{ linuxl1_info.stdout }}"
       when: (os_type != "Windows")
       ignore_errors: true
