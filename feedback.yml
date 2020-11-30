@@ -15,7 +15,7 @@
         token: 'TJ6A2L403/B01FR8JCNV9/0RpPLACul2WCa5BuD8lBlA7N'
         attachments:
           - text: "{{ job_msg }}"
-            title: Output of "{{ command }}" on {{ host_ip }}
+            title: Launched {{ tower_job_id }} Output of "{{ command }}" on {{ host_ip }}
         channel: "ansibleadhoc"
         domain: "app.slack.com"
       register: post_out
