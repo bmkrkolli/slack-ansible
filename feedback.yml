@@ -6,7 +6,7 @@
     slack_token: "TJ6A2L403/B01FR8JCNV9/0RpPLACul2WCa5BuD8lBlA7N"
     to: "ansibleadhoc"
     host_ip: "{{ hostvars['localhost']['host_ip'] }}"
-    role_name: "{{ hostvars['localhost']['role_name'] }}"
+    job_msg: "hostvars[host_ip]['job_msg']"
     mesge: >-
       "{% if (hostvars[host_ip]['host_reachable']|bool) == true %} 
       {{ host_ip }} is connecting
@@ -16,8 +16,8 @@
       slack:
         token: 'TJ6A2L403/B01FR8JCNV9/0RpPLACul2WCa5BuD8lBlA7N'
         attachments:
-          - text: "{{ command }} {{ host_ip }} {{ mesge }}"
-            title: "Devlopment Testing"
+          - text: "{{ job_msg }}"
+            title: "Command: {{ command }} ; Host: {{ host_ip }}"
         channel: "ansibleadhoc"
         domain: "app.slack.com"
       register: post_out
