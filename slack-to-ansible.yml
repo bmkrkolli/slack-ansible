@@ -19,3 +19,6 @@
   when:
     - '(hostvars["{{ IPAddress }}"]["host_reachable"]|bool) == true'
   ignore_errors: true
+
+- import_playbook: feedback.yml
+  ignore_errors: true

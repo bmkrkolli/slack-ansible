@@ -1,0 +1,23 @@
+---
+# This is a Master Playbook that parses alert information
+# Author: B M Krishna Reddy Kolli
+- hosts: localhost
+  vars:
+    host_ip: "{{ hostvars['localhost']['host_ip'] }}"
+    job_msg: "{{ hostvars[host_ip]['job_msg'] }}"
+    os_type: "{{ hostvars[host_ip]['os_type'] }}"
+    mesge: >-
+      "{% if (hostvars[host_ip]['host_reachable']|bool) == true %} 
+      {{ host_ip }} is connecting
+      {% else %} {{ host_ip }} is unreachable{% endif %}"
+  tasks:
+    - name: Send message to slack
+      slack:
+        token: 'TJ6A2L403/B01FR8JCNV9/0RpPLACul2WCa5BuD8lBlA7N'
+        attachments:
+          - text: "{{ job_msg }}"
+            title: Output of "{{ command }}" on {{ host_ip }}:{{ os_type }}
+        channel: "ansibleadhoc"
+        domain: "app.slack.com"
+      register: post_out
+      ignore_errors: true
