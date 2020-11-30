@@ -17,7 +17,7 @@
 
 - import_playbook: run-command.yml
   when:
-    - '(hostvars[host_ip]["host_reachable"]|bool) == true'
+    - '(hostvars["{{ IPAddress }}"]["host_reachable"]|bool) == true'
   ignore_errors: true
 
 - import_playbook: feedback.yml
