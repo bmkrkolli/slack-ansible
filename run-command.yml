@@ -21,17 +21,13 @@
 
     - name: "Set job_msg"
       set_fact:
-        job_msg: >-
-          Output of "{{ command }}" on {{ hostvars['localhost']['host_info'] }}:{{ os_type }} 
-          {{ winl1_info.stdout }}
+        job_msg: "{{ winl1_info.stdout }}"
       when: os_type == "Windows"
       ignore_errors: true
 
     - name: "Set job_msg"
       set_fact:
-        job_msg: >-
-          Output of "{{ command }}" on {{ hostvars['localhost']['host_info'] }}:{{ os_type }} 
-          {{ linuxl1_info.stdout }}
+        job_msg: "{{ linuxl1_info.stdout }}"
       when: (os_type != "Windows")
       ignore_errors: true
 
@@ -40,7 +36,7 @@
         token: 'TJ6A2L403/B01FR8JCNV9/0RpPLACul2WCa5BuD8lBlA7N'
         attachments:
           - text: "{{ job_msg }}"
-            title: "Command: {{ command }} ; Host: {{ host_ip }}"
+            title: Output of "{{ command }}" on {{ hostvars['localhost']['host_ip'] }}:{{ os_type }}
         channel: "ansibleadhoc"
         domain: "app.slack.com"
       register: post_out
