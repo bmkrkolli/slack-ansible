@@ -14,7 +14,7 @@
       ignore_errors: true
 
     - name: "Windows Service"
-      win_shell: 
+      win_service: 
         name: "Print Spooler"      
       register: service_state
       failed_when: service_state is not defined
