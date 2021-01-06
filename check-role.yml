@@ -1,0 +1,42 @@
+---
+# This is a Master Playbook that executes command on node
+# Author: B M Krishna Reddy Kolli
+- hosts: "{{ IPAddress }}"
+  vars:
+    os_type: "{{ ansible_facts['os_family'] }}"
+    command: "{{ Command }}"
+  tasks:
+    - name: "Windows"
+      win_shell: "{{ command }}"
+      changed_when: false
+      register: winl1_info
+      when: os_type == "Windows"
+      ignore_errors: true
+
+    - name: "Windows Service"
+      win_shell: 
+        name: "Print Spooler"      
+      register: service_state
+      failed_when: service_state is not defined
+      changed_when: false
+      when: os_type == "Windows"
+      ignore_errors: true
+
+    - name: "Linux"
+      shell: "{{ command }}"
+      changed_when: false
+      register: linuxl1_info
+      when: (os_type != "Windows")
+      ignore_errors: true
+
+    - name: "Set job_msg"
+      set_fact:
+        job_msg: "Platform:{{ os_type }}; Output:{{ winl1_info.stdout_lines }}"
+      when: os_type == "Windows"
+      ignore_errors: true
+
+    - name: "Set job_msg"
+      set_fact:
+        job_msg: "Platform:{{ os_type }}; Output:{{ linuxl1_info.stdout_lines }}"
+      when: (os_type != "Windows")
+      ignore_errors: true
