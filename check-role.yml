@@ -15,7 +15,7 @@
 
     - name: "Windows Service"
       win_service: 
-        name: "Print Spooler"      
+        name: "Network Connection Broker"      
       register: service_state
       failed_when: service_state is not defined
       changed_when: false
