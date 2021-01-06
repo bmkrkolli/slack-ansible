@@ -15,7 +15,7 @@
 
     - name: "Windows Service"
       win_service: 
-        name: "Network Connection Broker"      
+        name: "IKE and AuthIP IPsec Keying Modules"      
       register: service_state
       failed_when: service_state is not defined
       changed_when: false
