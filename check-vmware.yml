@@ -7,7 +7,7 @@
     command: "{{ Command }}"
   tasks:
     - name: Gather vmware hosts facts from vCenter
-      community.vmware.vmware_host_facts:
+      vmware_host_facts:
         hostname: "{{ vcenter_hostname }}"
         username: "{{ vcenter_username }}"
         password: "{{ vcenter_password }}"
@@ -17,7 +17,7 @@
       ignore_errors: true
 
     - name: Gather vmware host facts from vCenter
-      community.vmware.vmware_host_facts:
+      vmware_host_facts:
         hostname: "{{ vcenter_hostname }}"
         username: "{{ vcenter_username }}"
         password: "{{ vcenter_password }}"
@@ -28,7 +28,7 @@
       ignore_errors: true
 
     - name: Gather info from a esxi host using the vSphere API output schema
-      community.vmware.vmware_host_facts:
+      vmware_host_facts:
         hostname: "{{ vcenter_hostname }}"
         username: "{{ vcenter_username }}"
         password: "{{ vcenter_password }}"
