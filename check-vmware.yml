@@ -7,11 +7,19 @@
     os_type: "{{ ansible_facts['os_family'] }}"
     command: "{{ Command }}"
   tasks:
+    - name: Set Facts
+      set_fact:
+        vch: "{{ lookup('env','VMWARE_HOST') }}"
+        vusr: "{{ lookup('env','VMWARE_USER') }}"
+        vpwd: "{{ lookup('env','VMWARE_PASSWORD') }}"
+      no_log: true
+      ignore_errors: true
+
     - name: Gather vmware hosts facts from vCenter
       vmware_host_facts:
-        hostname: "{{ vcenter_hostname }}"
-        username: "{{ vcenter_username }}"
-        password: "{{ vcenter_password }}"
+        hostname: "{{ vch }}"
+        username: "{{ vusr }}"
+        password: "{{ vpwd }}"
       register: all_host_facts
       delegate_to: localhost
       changed_when: false
@@ -19,9 +27,9 @@
 
     - name: Gather vmware host facts from vCenter
       vmware_host_facts:
-        hostname: "{{ vcenter_hostname }}"
-        username: "{{ vcenter_username }}"
-        password: "{{ vcenter_password }}"
+        hostname: "{{ vch }}"
+        username: "{{ vusr }}"
+        password: "{{ vpwd }}"
         esxi_hostname: "{{ esxi_hostname }}"
       register: host_facts
       delegate_to: localhost
@@ -30,9 +38,9 @@
 
     - name: Gather info from a esxi host using the vSphere API output schema
       vmware_host_facts:
-        hostname: "{{ vcenter_hostname }}"
-        username: "{{ vcenter_username }}"
-        password: "{{ vcenter_password }}"
+        hostname: "{{ vch }}"
+        username: "{{ vusr }}"
+        password: "{{ vpwd }}"
         esxi_hostname: "{{ esxi_hostname }}"
         schema: vsphere
         properties:
