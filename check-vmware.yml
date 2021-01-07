@@ -36,5 +36,30 @@
       changed_when: false
       ignore_errors: true
 
+    - name: Gather cluster info from given datacenter
+      vmware_cluster_info:
+        hostname: "{{ vch }}"
+        username: "{{ vusr }}"
+        password: "{{ vpwd }}"
+        datacenter: "{{ DataCenter }}"
+        validate_certs: no
+      register: cluster_info
+      delegate_to: localhost
+      changed_when: false
+      ignore_errors: true
+
+    - name: Gather info from datacenter about specific cluster
+      vmware_cluster_info:
+        hostname: "{{ vch }}"
+        username: "{{ vusr }}"
+        password: "{{ vpwd }}"
+        cluster_name: "{{ Cluster }}"
+      register: cluster_facts
+      delegate_to: localhost
+      changed_when: false
+      ignore_errors: true
+
     - debug: var=vcenter_facts
     - debug: var=host_facts
+    - debug: var=cluster_info
+    - debug: var=cluster_facts
