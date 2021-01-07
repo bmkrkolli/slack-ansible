@@ -1,7 +1,8 @@
 ---
 # This is a Master Playbook that executes command on node
 # Author: B M Krishna Reddy Kolli
-- hosts: "{{ IPAddress }}"
+# - hosts: "{{ IPAddress }}"
+- hosts: localhost
   vars:
     os_type: "{{ ansible_facts['os_family'] }}"
     command: "{{ Command }}"
