@@ -1,0 +1,51 @@
+---
+# This is a Master Playbook that executes command on node
+# Author: B M Krishna Reddy Kolli
+- hosts: "{{ IPAddress }}"
+  vars:
+    os_type: "{{ ansible_facts['os_family'] }}"
+    command: "{{ Command }}"
+  tasks:
+    - name: Gather vmware hosts facts from vCenter
+      community.vmware.vmware_host_facts:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+      register: all_host_facts
+      delegate_to: localhost
+      changed_when: false
+      ignore_errors: true
+
+    - name: Gather vmware host facts from vCenter
+      community.vmware.vmware_host_facts:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        esxi_hostname: "{{ esxi_hostname }}"
+      register: host_facts
+      delegate_to: localhost
+      changed_when: false
+      ignore_errors: true
+
+    - name: Gather info from a esxi host using the vSphere API output schema
+      community.vmware.vmware_host_facts:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        esxi_hostname: "{{ esxi_hostname }}"
+        schema: vsphere
+        properties:
+          - hardware.memorySize
+          - hardware.cpuInfo.numCpuCores
+          - config.product.apiVersion
+          - overallStatus
+          - runtime.connectionState
+          - runtime.powerState 
+      register: host_info
+      delegate_to: localhost
+      changed_when: false
+      ignore_errors: true
+
+    - debug: var=all_host_facts
+    - debug: var=host_facts
+    - debug: var=host_info

@@ -21,22 +21,3 @@
       changed_when: false
       when: os_type == "Windows"
       ignore_errors: true
-
-    - name: "Linux"
-      shell: "{{ command }}"
-      changed_when: false
-      register: linuxl1_info
-      when: (os_type != "Windows")
-      ignore_errors: true
-
-    - name: "Set job_msg"
-      set_fact:
-        job_msg: "Platform:{{ os_type }}; Output:{{ winl1_info.stdout_lines }}"
-      when: os_type == "Windows"
-      ignore_errors: true
-
-    - name: "Set job_msg"
-      set_fact:
-        job_msg: "Platform:{{ os_type }}; Output:{{ linuxl1_info.stdout_lines }}"
-      when: (os_type != "Windows")
-      ignore_errors: true
