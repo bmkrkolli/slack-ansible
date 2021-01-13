@@ -38,14 +38,14 @@
           "text": "Ansible Job Log","emoji": true},"value": "click_me_123",
           "url": "https://8.9.9.22/#/jobs/playbook/{{ tower_job_id }}",
           "action_id": "button-action"}]}]}'
-        surl: "https://hooks.slack.com/services/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"
+        surl: "https://hooks.slack.com/services/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"
       changed_when: false
       delegate_to: localhost
       ignore_errors: true
 
     - name: Post Message to Slack
       slack:
-        token: 'TJ6A2L403/B01JLRU0DQT/H4QzGmGAgslp5NClg4DPImRZ'
+        token: 'TJ6A2L403/B01JE061FRC/hu0p9xr9iipb5PLANNfeDbCZ'
         attachments:
           - blocks:
             - type: section
