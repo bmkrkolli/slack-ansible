@@ -50,7 +50,7 @@
           - blocks:
             - type: section
               text:
-                type: mrkdwn
+                type: plain_text
                 text: Launched {{ tower_job_id }} And {{ winl1_info.stdout_lines[0] }} is {{ service_state.state }} on {{ IPAddress }}
             - type: section
               text:
