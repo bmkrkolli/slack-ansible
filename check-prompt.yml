@@ -26,19 +26,19 @@
       set_fact:
         payload: >-
           '{"blocks": [{"type": "section","text": {"type": "plain_text",
-          "text": "Launched {{ tower_job_id }} and Service {{ service_name }}",
-          "emoji": true}},{"type": "actions","elements": 
-          [{"type": "button","text": {"type": "plain_text","emoji": true,
-          "text": "Restart Job"},"style": "primary","value": "click_me_123",
-          "url": "https://8.9.9.22/#/templates/job_template/17",
+          "text": "Launched {{ tower_job_id }}",
+          "emoji": true}},{"type": "actions","elements": [{"type": "button",
+          "text": {"type": "plain_text","emoji": true,
+          "text": "Restart Service Job"},"style": "primary","value": "click_me_123",
+          "url": "https://8.9.9.22/#/templates/job_template/17"},
           {"type": "button","text": {"type": "plain_text","emoji": true,
           "text": "Check Serivce Job"},"style": "danger","value": "click_me_123",
-          "url": "https://8.9.9.22/#/templates/job_template/15"},{"type": 
-          "button","text": {"type": "plain_text","text": "Job Log",
-          "emoji": true},"value": "click_me_123",
+          "url": "https://8.9.9.22/#/templates/job_template/15"},
+          {"type": "button","text": {"type": "plain_text",
+          "text": "Ansible Job Log","emoji": true},"value": "click_me_123",
           "url": "https://8.9.9.22/#/jobs/playbook/{{ tower_job_id }}",
           "action_id": "button-action"}]}]}'
-        zurl: "https://hooks.slack.com/services/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"
+        zurl: "https://hooks.slack.com/services/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"
       changed_when: false
       delegate_to: localhost
       ignore_errors: true
