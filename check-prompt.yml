@@ -22,41 +22,28 @@
       when: os_type == "Windows"
       ignore_errors: true
 
-    - name: Send message to slack
-      slack:
-        token: 'TJ6A2L403/B01FR8JCNV9/0RpPLACul2WCa5BuD8lBlA7N'
-        blocks:
-          - type: section
-            text:
-              type: plain_text
-              text: Launched {{ tower_job_id }} on {{ IPAddress }} and Service is {{ service_name }}
-              emoji: true
-          - type: actions
-            elements:
-            - type: button
-              text:
-                type: plain_text
-                emoji: true
-                text: Approve
-              style: primary
-              value: click_me_123
-            - type: button
-              text:
-                type: plain_text
-                emoji: true
-                text: Deny
-              style: danger
-              value: click_me_123
-            - type: button
-              text:
-                type: plain_text
-                text: Ansible Tower
-                emoji: true
-              value: click_me_123
-              url: https://8.9.9.22/#/home
-              action_id: button-action
-        channel: "ansibleadhoc"
-        domain: "app.slack.com"
-      register: post_out
+    - name: Set facts for Slack Message
+      set_fact:
+        payload: >-
+          '{"blocks": [{"type": "section","text": {"type": "plain_text",
+          "text": "Launched {{ tower_job_id }} and Service {{ service_name }}",
+          "emoji": true}},{"type": "actions","elements": 
+          [{"type": "button","text": {"type": "plain_text","emoji": true,
+          "text": "Approve"},"style": "primary","value": "click_me_123"},
+          {"type": "button","text": {"type": "plain_text","emoji": true,
+          "text": "Deny"},"style": "danger","value": "click_me_123"},{"type": 
+          "button","text": {"type": "plain_text","text": "Ansible Tower",
+          "emoji": true},"value": "click_me_123","url": "https://8.9.9.22/#/home",
+          "action_id": "button-action"}]}]}'
+        zurl: "https://hooks.slack.com/services/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"
+      changed_when: false
+      delegate_to: localhost
+      ignore_errors: true
+
+    - name: Post Message to Slack
+      shell: >-
+        curl -X POST -H 'Content-type: application/json' --data {{ payload }} 
+        {{ zurl }}  
+      changed_when: false
       delegate_to: localhost
       ignore_errors: true
