@@ -38,7 +38,7 @@
           "text": "Ansible Job Log","emoji": true},"value": "click_me_123",
           "url": "https://8.9.9.22/#/jobs/playbook/{{ tower_job_id }}",
           "action_id": "button-action"}]}]}'
-        zurl: "https://hooks.slack.com/services/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"
+        zurl: "https://hooks.slack.com/services/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"
       changed_when: false
       delegate_to: localhost
       ignore_errors: true
