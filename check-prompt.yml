@@ -58,4 +58,5 @@
         channel: "ansibleadhoc"
         domain: "app.slack.com"
       register: post_out
+      delegate_to: localhost
       ignore_errors: true
