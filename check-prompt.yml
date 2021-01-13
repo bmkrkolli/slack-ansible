@@ -47,34 +47,22 @@
       slack:
         token: 'TJ6A2L403/B01JHLL26RK/4pAeSr4H8wRi1rmtlVIpTL04'
         attachments:
-          - blocks:
-            - type: section
-              text:
-                type: plain_text
-                text: Launched {{ tower_job_id }} And {{ winl1_info.stdout_lines[0] }} is {{ service_state.state }} on {{ IPAddress }}
-            - type: section
-              text:
-                type: mrkdwn
-                text: Ansible Job Log
-              accessory:
-                type: button
-                text:
-                  type: plain_text
-                  text: Ansible Job Log
-                url: https://8.9.9.22/#/jobs/playbook/67
+          - text: Launched {{ tower_job_id }} and {{ winl1_info.stdout_lines[0] }} is {{ service_state.state }} on {{ IPAddress }}
+            color: "#3AA3E3"
+            attachment_type: default
+            actions:
+            - name: game
+              text: Chess
+              type: button
+              value: chess
+            - name: game
+              text: Tennis
+              type: button
+              value: tennis
+#                text: Ansible Job Log
+#                url: https://8.9.9.22/#/jobs/playbook/67
+        channel: "ansibleadhoc"
         domain: "app.slack.com"
-#      shell: >-
-#        curl -X POST -H 'Content-type: application/json' {{ surl }} -d {{ payload }}
-#      args:
-#        warn: no
-#      uri:
-#        url: "{{ surl }}"
-#        method: POST
-#        body: "{{ payload }}"
-#        body_format: json
-#        headers:
-#          Content-Type: application/json
-#        validate_certs: no
       changed_when: false
       delegate_to: localhost
       ignore_errors: true
