@@ -38,17 +38,33 @@
           "text": "Ansible Job Log","emoji": true},"value": "click_me_123",
           "url": "https://8.9.9.22/#/jobs/playbook/{{ tower_job_id }}",
           "action_id": "button-action"}]}]}'
-        surl: "https://hooks.slack.com/services/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"
+        surl: "https://hooks.slack.com/services/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"
       changed_when: false
       delegate_to: localhost
       ignore_errors: true
 
     - name: Post Message to Slack
-      shell: >-
-        curl -X POST -H 'Content-type: application/json' {{ surl }} -d {{ payload }}
-      args:
-        warn: no
-#    - name: REST POST Example
+      slack:
+        token: 'TJ6A2L403/B01JLRU0DQT/H4QzGmGAgslp5NClg4DPImRZ'
+        attachments:
+          - title: Launched {{ tower_job_id }} And {{ winl1_info.stdout_lines[0] }} is {{ service_state.state }} on {{ IPAddress }}
+        blocks:
+          - type: section
+            text:
+              type: mrkdwn
+              text: Ansible Job Log
+            accessory:
+              type: button
+              text:
+                type: plain_text
+                text: Ansible Job Log
+              url: https://8.9.9.22/#/jobs/playbook/67
+        channel: "ansibleadhoc"
+        domain: "app.slack.com"
+#      shell: >-
+#        curl -X POST -H 'Content-type: application/json' {{ surl }} -d {{ payload }}
+#      args:
+#        warn: no
 #      uri:
 #        url: "{{ surl }}"
 #        method: POST
