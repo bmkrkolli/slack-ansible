@@ -38,7 +38,7 @@
           "text": "Ansible Job Log","emoji": true},"value": "click_me_123",
           "url": "https://8.9.9.22/#/jobs/playbook/{{ tower_job_id }}",
           "action_id": "button-action"}]}]}'
-        zurl: "https://hooks.slack.com/services/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"
+        zurl: "https://hooks.slack.com/services/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"
       changed_when: false
       delegate_to: localhost
       ignore_errors: true
@@ -48,4 +48,6 @@
         curl -X POST -H 'Content-type: application/json' {{ zurl }} -d {{ payload }}
       changed_when: false
       delegate_to: localhost
+      become: yes
+      become_method: sudo
       ignore_errors: true

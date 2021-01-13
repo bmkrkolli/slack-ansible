@@ -12,7 +12,7 @@
   tasks:
     - name: Send message to slack
       slack:
-        token: 'TJ6A2L403/B01JSK4ACTW/jeA905Q6xodI7SP0o0WBC6N5'
+        token: 'TJ6A2L403/B01JZ3SSSRF/BtD8WauopuTPsPXrBiAvl8Mb'
         attachments:
           - text: "{{ job_msg }}"
             title: Launched {{ tower_job_id }} Output of "{{ command }}" on {{ host_ip }}
