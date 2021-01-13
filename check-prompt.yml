@@ -49,5 +49,4 @@
       changed_when: false
       delegate_to: localhost
       become: yes
-      become_method: sudo
       ignore_errors: true
