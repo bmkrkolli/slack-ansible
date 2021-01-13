@@ -38,29 +38,20 @@
           "text": "Ansible Job Log","emoji": true},"value": "click_me_123",
           "url": "https://8.9.9.22/#/jobs/playbook/{{ tower_job_id }}",
           "action_id": "button-action"}]}]}'
-        surl: "https://hooks.slack.com/services/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"
+        surl: "https://hooks.slack.com/services/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"
       changed_when: false
       delegate_to: localhost
       ignore_errors: true
 
     - name: Post Message to Slack
       slack:
-        token: 'TJ6A2L403/B01JE0R654N/2uI2zOQmbVEkbYPPVLt0hinw'
+        token: 'TJ6A2L403/B01JT18Q8TW/w4GiE7G1gHUNQc7FGOebPaj6'
         attachments:
-          - text: Launched {{ tower_job_id }} and {{ winl1_info.stdout_lines[0] }} is {{ service_state.state }} on {{ IPAddress }}
-            color: "#3AA3E3"
-            attachment_type: default
-            actions:
-            - name: game
-              text: Chess
-              type: button
-              value: chess
-            - name: game
-              text: Tennis
-              type: button
-              value: tennis
-#                text: Ansible Job Log
-#                url: https://8.9.9.22/#/jobs/playbook/67
+          - title: Launched {{ tower_job_id }} and {{ winl1_info.stdout_lines[0] }} is {{ service_state.state }} on {{ IPAddress }}
+            text: >-
+              <https://8.9.9.22/#/templates/job_template/17|Restart {{ winl1_info.stdout_lines[0] }} on {{ IPAddress }}>
+              <https://8.9.9.22/#/templates/job_template/15|Re-Check {{ winl1_info.stdout_lines[0] }} on {{ IPAddress }}>
+              <https://8.9.9.22/#/jobs/playbook/{{ tower_job_id }}|Check Job Log>
         channel: "ansibleadhoc"
         domain: "app.slack.com"
       changed_when: false
