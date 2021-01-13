@@ -26,7 +26,7 @@
       set_fact:
         payload: >-
           '{"blocks": [{"type": "section","text": {"type": "plain_text",
-          "text": "Launched {{ tower_job_id }}",
+          "text": "Launched {{ tower_job_id }} And {{ service_name }} is {{ service_state.state }} on {{ IPAddress }}",
           "emoji": true}},{"type": "actions","elements": [{"type": "button",
           "text": {"type": "plain_text","emoji": true,
           "text": "Restart Service Job"},"style": "primary","value": "click_me_123",
