@@ -27,7 +27,19 @@
         token: 'TJ6A2L403/B01J63MV10X/w4AYbJ0mtY2vOWBHEQ6gZpI4'
         attachments:
           - title: Launched {{ tower_job_id }} and {{ winl1_info.stdout_lines[0] }} is {{ service_state.state }} on {{ IPAddress }}
-            text: "*Actions:*\n <https://8.9.9.22/#/templates/job_template/17|Restart {{ winl1_info.stdout_lines[0] }} on {{ IPAddress }}>\n <https://8.9.9.22/#/templates/job_template/15|Re-Check {{ winl1_info.stdout_lines[0] }} on {{ IPAddress }}>\n <https://8.9.9.22/#/jobs/playbook/{{ tower_job_id }}|Check Job Log>"
+            text: "*Actions:*"
+            actions:
+            - type: button
+              text: Restart {{ winl1_info.stdout_lines[0] }} on {{ IPAddress }}
+              style: primary
+              url: https://8.9.9.22/#/templates/job_template/17
+            - type: button
+              text: Skip {{ winl1_info.stdout_lines[0] }} status on {{ IPAddress }}
+              style: danger
+              url: https://8.9.9.22/#/templates/job_template/15
+            - type: button
+              text: Check Job Log
+              url: https://8.9.9.22/#/jobs/playbook/{{ tower_job_id }}
         channel: "ansibleadhoc"
         domain: "app.slack.com"
       changed_when: false
@@ -42,16 +54,16 @@
             text: "*Actions:*"
             actions:
             - type: button
-              text: Check Job Log
-              url: https://8.9.9.22/#/jobs/playbook/{{ tower_job_id }}
-            - type: button
               text: Restart {{ winl1_info.stdout_lines[0] }} on {{ IPAddress }}
               style: primary
               url: https://8.9.9.22/#/templates/job_template/17
             - type: button
-              text: Escalate {{ winl1_info.stdout_lines[0] }} is {{ service_state.state }} on {{ IPAddress }}
+              text: Skip {{ winl1_info.stdout_lines[0] }} status on {{ IPAddress }}
               style: danger
               url: https://8.9.9.22/#/templates/job_template/15
+            - type: button
+              text: Check Job Log
+              url: https://8.9.9.22/#/jobs/playbook/{{ tower_job_id }}
         channel: "automation"
         domain: "app.slack.com"
       changed_when: false
