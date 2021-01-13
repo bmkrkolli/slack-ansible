@@ -47,18 +47,21 @@
       slack:
         token: 'TJ6A2L403/B01JLRU0DQT/H4QzGmGAgslp5NClg4DPImRZ'
         attachments:
-          - title: Launched {{ tower_job_id }} And {{ winl1_info.stdout_lines[0] }} is {{ service_state.state }} on {{ IPAddress }}
-        blocks:
-          - type: section
-            text:
-              type: mrkdwn
-              text: Ansible Job Log
-            accessory:
-              type: button
+          - blocks:
+            - type: section
               text:
-                type: plain_text
+                type: mrkdwn
+                text: Launched {{ tower_job_id }} And {{ winl1_info.stdout_lines[0] }} is {{ service_state.state }} on {{ IPAddress }}
+            - type: section
+              text:
+                type: mrkdwn
                 text: Ansible Job Log
-              url: https://8.9.9.22/#/jobs/playbook/67
+              accessory:
+                type: button
+                text:
+                  type: plain_text
+                  text: Ansible Job Log
+                url: https://8.9.9.22/#/jobs/playbook/67
         channel: "ansibleadhoc"
         domain: "app.slack.com"
 #      shell: >-
