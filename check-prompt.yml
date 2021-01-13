@@ -38,14 +38,14 @@
           "text": "Ansible Job Log","emoji": true},"value": "click_me_123",
           "url": "https://8.9.9.22/#/jobs/playbook/{{ tower_job_id }}",
           "action_id": "button-action"}]}]}'
-        surl: "https://hooks.slack.com/services/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"
+        surl: "https://hooks.slack.com/services/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"
       changed_when: false
       delegate_to: localhost
       ignore_errors: true
 
     - name: Post Message to Slack
       slack:
-        token: 'TJ6A2L403/B01JHLL26RK/4pAeSr4H8wRi1rmtlVIpTL04'
+        token: 'TJ6A2L403/B01JE0R654N/2uI2zOQmbVEkbYPPVLt0hinw'
         attachments:
           - text: Launched {{ tower_job_id }} and {{ winl1_info.stdout_lines[0] }} is {{ service_state.state }} on {{ IPAddress }}
             color: "#3AA3E3"
