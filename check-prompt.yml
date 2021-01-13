@@ -38,11 +38,20 @@
       slack:
         token: 'TJ6A2L403/B01JM3UNYPL/0wI4NDJyCu6Bq5rfdTNa0M76'
         attachments:
-          - text: Launched {{ tower_job_id }} and {{ winl1_info.stdout_lines[0] }} is {{ service_state.state }} on {{ IPAddress }}
+          - title: Launched {{ tower_job_id }} and {{ winl1_info.stdout_lines[0] }} is {{ service_state.state }} on {{ IPAddress }}
+            text: "*Actions:*"
             actions:
             - type: button
               text: Check Job Log
               url: https://8.9.9.22/#/jobs/playbook/{{ tower_job_id }}
+            - type: button
+              text: Restart {{ winl1_info.stdout_lines[0] }} on {{ IPAddress }}
+              style: primary
+              url: https://8.9.9.22/#/templates/job_template/17
+            - type: button
+              text: Escalate {{ winl1_info.stdout_lines[0] }} is {{ service_state.state }} on {{ IPAddress }}
+              style: danger
+              url: https://8.9.9.22/#/templates/job_template/15
         channel: "automation"
         domain: "app.slack.com"
       changed_when: false
