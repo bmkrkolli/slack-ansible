@@ -42,8 +42,7 @@
 
     - name: Post Message to Slack
       shell: >-
-        curl -X POST -H 'Content-type: application/json' --data {{ payload }} 
-        {{ zurl }}  
+        curl -X POST -H 'Content-type: application/json' {{ zurl }} -d {{ payload }}
       changed_when: false
       delegate_to: localhost
       ignore_errors: true
