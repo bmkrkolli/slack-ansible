@@ -5,10 +5,6 @@
   vars:
     os_type: "{{ ansible_facts['os_family'] }}"
     command: "{{ Command }}"
-  vars_prompt:
-    - name: service_name
-      prompt: Enter Service Name
-      default: "print spooler"
   tasks:
     - name: "Windows"
       win_shell: "{{ command }}"
@@ -29,9 +25,36 @@
     - name: Send message to slack
       slack:
         token: 'TJ6A2L403/B01FR8JCNV9/0RpPLACul2WCa5BuD8lBlA7N'
-        attachments:
-          - text: "Service is {{ service_name }} and Command is {{ command }}"
-            title: Launched {{ tower_job_id }} on {{ host_ip }}
+        blocks:
+          - type: section
+            text:
+              type: plain_text
+              text: Launched {{ tower_job_id }} on {{ IPAddress }} and Service is {{ service_name }}
+              emoji: true
+          - type: actions
+            elements:
+            - type: button
+              text:
+                type: plain_text
+                emoji: true
+                text: Approve
+              style: primary
+              value: click_me_123
+            - type: button
+              text:
+                type: plain_text
+                emoji: true
+                text: Deny
+              style: danger
+              value: click_me_123
+            - type: button
+              text:
+                type: plain_text
+                text: Ansible Tower
+                emoji: true
+              value: click_me_123
+              url: https://8.9.9.22/#/home
+              action_id: button-action
         channel: "ansibleadhoc"
         domain: "app.slack.com"
       register: post_out
