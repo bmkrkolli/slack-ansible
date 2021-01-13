@@ -38,15 +38,23 @@
           "text": "Ansible Job Log","emoji": true},"value": "click_me_123",
           "url": "https://8.9.9.22/#/jobs/playbook/{{ tower_job_id }}",
           "action_id": "button-action"}]}]}'
-        zurl: "https://hooks.slack.com/services/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"
+        surl: "https://hooks.slack.com/services/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"
       changed_when: false
       delegate_to: localhost
       ignore_errors: true
 
-    - name: Post Message to Slack
-      shell: >-
-        curl -X POST -H 'Content-type: application/json' {{ zurl }} -d {{ payload }}
+#    - name: Post Message to Slack
+#      shell: >-
+#        curl -X POST -H 'Content-type: application/json' {{ zurl }} -d {{ payload }}
+    - name: REST POST Example
+      uri:
+        url: "{{ surl }}"
+        method: POST
+        body: "{{ payload }}"
+        body_format: json
+        headers:
+          Content-Type: application/json
+        validate_certs: no
       changed_when: false
       delegate_to: localhost
-      become: yes
       ignore_errors: true
