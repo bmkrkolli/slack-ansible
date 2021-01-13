@@ -1,0 +1,38 @@
+---
+# This is a Master Playbook that executes command on node
+# Author: B M Krishna Reddy Kolli
+- hosts: "{{ IPAddress }}"
+  vars:
+    os_type: "{{ ansible_facts['os_family'] }}"
+    command: "{{ Command }}"
+  vars_prompt:
+    - name: service_name
+      prompt: Enter Service Name
+      default: "print spooler"
+  tasks:
+    - name: "Windows"
+      win_shell: "{{ command }}"
+      changed_when: false
+      register: winl1_info
+      when: os_type == "Windows"
+      ignore_errors: true
+
+    - name: "Windows Service"
+      win_service: 
+        name: "{{ service_name }}"      
+      register: service_state
+      failed_when: service_state is not defined
+      changed_when: false
+      when: os_type == "Windows"
+      ignore_errors: true
+
+    - name: Send message to slack
+      slack:
+        token: 'TJ6A2L403/B01FR8JCNV9/0RpPLACul2WCa5BuD8lBlA7N'
+        attachments:
+          - text: "Service is {{ service_name }} and Command is {{ command }}"
+            title: Launched {{ tower_job_id }} on {{ host_ip }}
+        channel: "ansibleadhoc"
+        domain: "app.slack.com"
+      register: post_out
+      ignore_errors: true
