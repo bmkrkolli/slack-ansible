@@ -61,11 +61,11 @@
             - type: button
               text: Restart {{ winl1_info.stdout_lines[0] }} on {{ IPAddress }}
               style: primary
-              url: https://8.9.9.22/#/templates/job_template/17
+              url: https://8.9.9.22/api/v2/job_templates/18/launch/
             - type: button
               text: Check {{ winl1_info.stdout_lines[0] }} status on {{ IPAddress }}
               style: danger
-#              url: https://8.9.9.22/#/templates/job_template/15
+              url: https://8.9.9.22/api/v2/job_templates/18/launch/
               value: "{{ winl1_info.stdout_lines[0] }}"
             - type: button
               text: Check Job Log
