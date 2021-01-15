@@ -66,7 +66,7 @@
               text: Check {{ winl1_info.stdout_lines[0] }} status on {{ IPAddress }}
               style: danger
 #              url: https://8.9.9.22/#/templates/job_template/15
-              value: "{{ bvalue }}"
+              value: '{{ bvalue }}'
             - type: button
               text: Check Job Log
               url: https://8.9.9.22/#/jobs/playbook/{{ tower_job_id }}
