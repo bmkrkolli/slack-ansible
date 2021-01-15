@@ -22,6 +22,11 @@
       when: os_type == "Windows"
       ignore_errors: true
 
+    - name: set fact
+      set_fact:
+        bvalue: '{"extra_vars": { "Command": "{{ winl1_info.stdout_lines[0] }}"}}'
+      ignore_errors: true
+
     - name: Post Message to Slack
       slack:
         token: 'TJ6A2L403/B01J63MV10X/w4AYbJ0mtY2vOWBHEQ6gZpI4'
@@ -61,7 +66,7 @@
               text: Check {{ winl1_info.stdout_lines[0] }} status on {{ IPAddress }}
               style: danger
 #              url: https://8.9.9.22/#/templates/job_template/15
-              value: '{"extra_vars": { "Command": "{{ winl1_info.stdout_lines[0] }}"}}'
+              value: "{{ bvalue }}"
             - type: button
               text: Check Job Log
               url: https://8.9.9.22/#/jobs/playbook/{{ tower_job_id }}
