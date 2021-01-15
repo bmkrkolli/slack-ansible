@@ -24,7 +24,7 @@
 
     - name: set fact
       set_fact:
-        bvalue: '{"extra_vars": { "Command": "{{ winl1_info.stdout_lines[0] }}"}}'
+        bvalue: '{\"extra_vars\": { \"Command\": \"{{ winl1_info.stdout_lines[0] }}\"}}'
       ignore_errors: true
 
     - name: Post Message to Slack
