@@ -1,0 +1,8 @@
+---
+# This is a Master Playbook that executes command on node
+# Author: B M Krishna Reddy Kolli
+- hosts: localhost
+  vars:
+    command: "{{ Command }}"
+  tasks:
+    - debug: var=command
