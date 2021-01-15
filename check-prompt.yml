@@ -58,9 +58,10 @@
               style: primary
               url: https://8.9.9.22/#/templates/job_template/17
             - type: button
-              text: Skip {{ winl1_info.stdout_lines[0] }} status on {{ IPAddress }}
+              text: Check {{ winl1_info.stdout_lines[0] }} status on {{ IPAddress }}
               style: danger
-              url: https://8.9.9.22/#/templates/job_template/15
+#              url: https://8.9.9.22/#/templates/job_template/15
+              value: '{"extra_vars": { "Command": "{{ winl1_info.stdout_lines[0] }}"}}'
             - type: button
               text: Check Job Log
               url: https://8.9.9.22/#/jobs/playbook/{{ tower_job_id }}
