@@ -31,6 +31,6 @@
       ignore_errors: true
 
     - name: mount Q
-      win_shell: 'New-PSDrive -Name "Q" -PSProvider "FileSystem" -Root "\\8.9.9.16\utils";copy-item -path "Q:\wmi_exporter-0.4.3-amd64.msi" -destination "C:\temp\wmi_exporter-0.4.3-amd64.msi";Remove-PSDrive Q;'
+      win_shell: 'New-PSDrive -Name "Q" -PSProvider "FileSystem" -Root "\\8.9.9.16\utils";Get-PSDrive Q;copy-item -path "Q:\wmi_exporter-0.4.3-amd64.msi" -destination "C:\temp\wmi_exporter-0.4.3-amd64.msi";Remove-PSDrive Q;'
       ignore_errors: true
 
