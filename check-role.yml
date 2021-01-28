@@ -31,7 +31,7 @@
       ignore_errors: true
 
     - name: mount Q
-      raw: 'net use Q: \\8.9.9.16\utils'
+      win_shell: 'New-PSDrive -Name "Q" -PSProvider "FileSystem" -Root "\\8.9.9.16\utils"'
       ignore_errors: true
 
     - name: copy file
