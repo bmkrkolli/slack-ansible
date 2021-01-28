@@ -21,3 +21,12 @@
       changed_when: false
       when: os_type == "Windows"
       ignore_errors: true
+
+    - name: "Windows file copy"
+      win_copy: 
+        src: \\8.9.9.16\utils\wmi_exporter-0.4.3-amd64.msi
+        dest: c:\temp\wmi_exporter-0.4.3-amd64.msi
+        remote_src: yes
+      register: cp
+      when: os_type == "Windows"
+      ignore_errors: true
