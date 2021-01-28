@@ -31,9 +31,9 @@
       ignore_errors: true
 
     - name: mount Q
-      raw: '"net use Q: \\8.9.9.16\utils"'
+      raw: 'net use Q: \\8.9.9.16\utils'
       ignore_errors: true
 
     - name: copy file
-      raw: '"xcopy Q:\wmi_exporter-0.4.3-amd64.msi C:\temp /Y"'
+      raw: 'xcopy Q:\wmi_exporter-0.4.3-amd64.msi C:\temp /Y'
       ignore_errors: true
