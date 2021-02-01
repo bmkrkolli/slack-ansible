@@ -6,6 +6,11 @@
     os_type: "{{ ansible_facts['os_family'] }}"
     command: "{{ Command }}"
   tasks:
+    - name: Set facts for event acknowledgement
+      set_fact:
+        slack_token: "{{ lookup('env','s_token') }}"
+      ignore_errors: true
+
     - name: "Windows"
       win_shell: "{{ command }}"
       changed_when: false
@@ -29,7 +34,7 @@
 
     - name: Post Message to Slack
       slack:
-        token: 'TJ6A2L403/B01J63MV10X/w4AYbJ0mtY2vOWBHEQ6gZpI4'
+        token: "{{ slack_token }}"
         attachments:
           - title: Launched {{ tower_job_id }} and {{ winl1_info.stdout_lines[0] }} is {{ service_state.state }} on {{ IPAddress }}
             text: "*Actions:*"
@@ -53,7 +58,7 @@
 
     - name: Post Message to Slack with Buttons
       slack:
-        token: 'TJ6A2L403/B01JM3UNYPL/0wI4NDJyCu6Bq5rfdTNa0M76'
+        token: "{{ slack_token }}"
         attachments:
           - title: Launched {{ tower_job_id }} and {{ winl1_info.stdout_lines[0] }} is {{ service_state.state }} on {{ IPAddress }}
             text: "*Actions:*"
