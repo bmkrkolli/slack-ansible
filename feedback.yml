@@ -19,7 +19,7 @@
       slack:
         token: "{{ slack_token }}"
         attachments:
-          - text: "{{ TOWER_SERVER_NAME }}"
+          - text: "{{ mesge }}"
             title: Launched {{ tower_job_id }} Output of "{{ command }}" on {{ host_ip }}
         channel: "ansibleadhoc"
         domain: "app.slack.com"
