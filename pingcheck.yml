@@ -82,6 +82,7 @@
     - name: Set facts for event acknowledgement
       set_fact:
         slack_token: "{{ lookup('env','s_token') }}"
+      run_once: true
       delegate_to: localhost
       ignore_errors: true
 
