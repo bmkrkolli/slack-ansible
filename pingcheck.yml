@@ -73,7 +73,7 @@
       when: raw_result.unreachable
       ignore_errors: true
 
-    - debug: msg="{{ ansible_facts['os_family'] }} , {{ group_names }} , {{ ping_module }} , py_ps"
+    - debug: msg="{{ ansible_facts['os_family'] }} , {{ group_names }} , {{ ping_module }} , {{ {{ py_ps }} }}"
       ignore_errors: true
 #    - debug: var=group_names
 #      ignore_errors: true
