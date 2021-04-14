@@ -92,8 +92,8 @@
         attachments:
           - text: >- 
               "{{ raw_result.stdout | default('NULL') }} , {{ group_names }} , {{ ansible_facts['os_family'] }} , {{ priv_result.stdout | default('NULL') }} , 
-              {% if ansible_facts['os_family'] != 'Windows' %} ansible_python_version: {{ setup_result.ansible_facts.ansible_python.version_info }} 
-              {% else %} ansible_powershell_version: {{ setup_result.ansible_facts.ansible_powershell_version }} {% endif %}"
+              {% if ansible_facts['os_family'] != 'Windows' %} python_version: {{ setup_result.ansible_facts.ansible_python.version_info }} 
+              {% else %} powershell_version: {{ setup_result.ansible_facts.ansible_powershell_version }} {% endif %}"
             title: Launched {{ tower_job_id }}
         channel: "automation"
         domain: "app.slack.com"
@@ -104,10 +104,10 @@
     - debug: 
         msg: >-
           "{{ ansible_facts['os_family'] }} , {{ group_names }} , 
-          {% if ansible_facts['os_family'] != 'Windows' %} ansible_python_version: 
-          {{ setup_result.ansible_facts.ansible_python.version_info }} , ansible_python_version: 
+          {% if ansible_facts['os_family'] != 'Windows' %} python_version: 
+          {{ setup_result.ansible_facts.ansible_python.version_info }} , python_executable: 
           {{ setup_result.ansible_facts.ansible_python.executable }}
-          {% else %} ansible_powershell_version: {{ setup_result.ansible_facts.ansible_powershell_version }} {% endif %}"
+          {% else %} powershell_version: {{ setup_result.ansible_facts.ansible_powershell_version }} {% endif %}"
       ignore_errors: true
 #    - debug: var=group_names
 #      ignore_errors: true
