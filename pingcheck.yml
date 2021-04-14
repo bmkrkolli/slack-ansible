@@ -90,7 +90,7 @@
         token: "{{ slack_token }}"
         attachments:
           - text: "{{ raw_result.stdout | default('NULL') }} , {{ group_names }} , {{ ansible_facts['os_family'] }} , {{ priv_result.stdout | default('NULL') }} , {{ setup_result.stdout | default('NULL') }}"
-            title: Launched {{ tower_job_id }} Output of "{{ command }}" on {{ host_ip }}
+            title: Launched {{ tower_job_id }}
         channel: "automation"
         domain: "app.slack.com"
       register: post_out
