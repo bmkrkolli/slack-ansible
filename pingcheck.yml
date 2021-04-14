@@ -1,59 +1,79 @@
 ---
 # This Playbook Checks Ping Result of Node
-#- hosts: "{{ hostvars['localhost']['host_info'] }}"
-- hosts: "{{ hostvars['localhost']['host_ip'] }}"
+- hosts: all
+  gather_facts: true
+  gather_subset: "!all"
+  ignore_errors: true
+  ignore_unreachable: true
   tasks:
     - name: Set facts
       set_fact:
         host_reachable: false
         host_exist: true
+        ping_module: "{{ (ansible_facts['os_family'] != 'Windows') | ternary('ping', 'win_ping') }}"
+        shell_module: "{{ (ansible_facts['os_family'] != 'Windows') | ternary('shell', 'win_shell') }}"
+        method: "{{ (ansible_facts['os_family'] != 'Windows') | ternary('sudo', 'runas') }}"
+        isadmin: >-
+          whoami;$wid=[System.Security.Principal.WindowsIdentity]::GetCurrent();
+          $prp=new-object System.Security.Principal.WindowsPrincipal($wid);
+          $adm=[System.Security.Principal.WindowsBuiltInRole]::Administrator;
+          $IsAdmin=$prp.IsInRole($adm);write-host Administrator: $isadmin;
       ignore_errors: true
 
-    - name: Validate connection and credentials of Linux Node
-      ping:
+    - name: Validate connection and credentials
+      action: >-
+        {{ ping_module }}
       register: ping_result
       ignore_errors: true
       ignore_unreachable: true
 
-    - block:
-        - name: Able to reach Linux Node
-          set_fact:
-            host_reachable: true
+    - name: Check raw module
+      raw: hostname;whoami;
+      changed_when: false
+      register: raw_result
+      ignore_errors: true
+      ignore_unreachable: true
+
+    - name: Check Privilege
+      raw: "{{ (ansible_facts['os_family'] != 'Windows') | ternary('whoami', isadmin) }}"
+      become: "{{ (ansible_facts['os_family'] != 'Windows') | ternary('yes', 'no') }}"
+      changed_when: false
+      register: priv_result
+      ignore_errors: true
+
+    - name: Check Setup
+      setup:
+        filter: ansible_python_version
+      changed_when: false
+      register: setup_result
+      ignore_errors: true
+
+    - name: Able to reach Node
+      set_fact:
+        host_reachable: true
+        job_msg: >-
+              "{{ ping_module }} > {{ hostvars['localhost']['host_ip'] }} is reachable"
       when: '"ping" in ping_result and ping_result.ping=="pong"'
       ignore_errors: true
 
-    - block:
-        - name: Unable to reach Linux Node
-          set_fact:
-            host_reachable: false
+    - name: Unable to reach Node
+      set_fact:
+        host_reachable: false
+        job_msg: >-
+              "{{ ping_module }} > {{ hostvars['localhost']['host_ip'] }} is not reachable"
       when: '"unreachable" in ping_result and ping_result.unreachable'
       ignore_errors: true
 
-    - block:
-        - name: Validate connection and credentials of Windows Node
-          win_ping:
-          register: ping_result
-          ignore_errors: true
-          ignore_unreachable: true
+    - name: Unable to reach Node
+      set_fact:
+        host_reachable: false
+        job_msg: >-
+              "{{ hostvars['localhost']['host_ip'] }} is not reachable. Error: {{ raw_result.msg }}"
+      when: raw_result.unreachable
+      ignore_errors: true
 
-        - name: Able to reach Windows Node
-          set_fact:
-            host_reachable: true
-          when: '"ping" in ping_result and ping_result.ping=="pong"'
-          ignore_errors: true
-
-        - name: Set Connectivity Check Feedback
-          set_fact:
-            host_reachable: false
-            job_msg: >-
-              ""{{ IPAddress }}" is not reachable"
-          when: '"unreachable" in ping_result and ping_result.unreachable'
-          ignore_errors: true
-      when: 'not host_reachable'
-
+    - debug: msg="{{ ansible_facts['os_family'] }} , {{ ping_module }}"
+      ignore_errors: true
     - debug: var=group_names
       ignore_errors: true
-    - debug: msg="{{ hostvars['localhost']['host_ip'] }}"
-      ignore_errors: true
-    - debug: msg="{{ ansible_facts['os_family'] }}"
-      ignore_errors: true
+              
