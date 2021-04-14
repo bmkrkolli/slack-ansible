@@ -13,7 +13,6 @@
         ping_module: "{{ (ansible_facts['os_family'] != 'Windows') | ternary('ping', 'win_ping') }}"
         shell_module: "{{ (ansible_facts['os_family'] != 'Windows') | ternary('shell', 'win_shell') }}"
         method: "{{ (ansible_facts['os_family'] != 'Windows') | ternary('sudo', 'runas') }}"
-        py_ps: "{{ (ansible_facts['os_family'] != 'Windows') | ternary('setup_result.ansible_facts.ansible_python', 'setup_result.ansible_facts.ansible_powershell_version') }}"
         isadmin: >-
           whoami;$wid=[System.Security.Principal.WindowsIdentity]::GetCurrent();
           $prp=new-object System.Security.Principal.WindowsPrincipal($wid);
@@ -44,7 +43,9 @@
 
     - name: Check Setup
       setup:
-        gather_subset: "{{ (ansible_facts['os_family'] != 'Windows') | ternary('!all,!min,python', '!all,!hardware,!network,!virtual,!ohai,!facter') }}"
+        gather_subset: >- 
+          "{{ (ansible_facts['os_family'] != 'Windows') | ternary('!all,!min,python', 
+          '!all,!hardware,!network,!virtual,!ohai,!facter') }}"
       changed_when: false
       register: setup_result
       ignore_errors: true
@@ -73,7 +74,13 @@
       when: raw_result.unreachable
       ignore_errors: true
 
-    - debug: msg="{{ ansible_facts['os_family'] }} , {{ group_names }} , {{ ping_module }} , {% if ansible_facts['os_family'] != 'Windows' %} {{ setup_result.ansible_facts.ansible_python }} {% else %} {{ setup_result.ansible_facts.ansible_powershell_version }} {% endif %}"
+    - debug: 
+        msg: >-
+          "{{ ansible_facts['os_family'] }} , {{ group_names }} , {{ ping_module }} , 
+          {% if ansible_facts['os_family'] != 'Windows' %} ansible_python_version: 
+          {{ setup_result.ansible_facts.ansible_python.version_info }} , ansible_python_version: 
+          {{ setup_result.ansible_facts.ansible_python.executable }}
+          {% else %} ansible_powershell_version: {{ setup_result.ansible_facts.ansible_powershell_version }} {% endif %}"
       ignore_errors: true
 #    - debug: var=group_names
 #      ignore_errors: true
