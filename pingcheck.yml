@@ -74,7 +74,7 @@
 
     - name: insert status into csv
       shell: >-
-        echo "{{ host }} , {{ group_names }} , {{ ansible_facts['os_family'] }} , {{ raw_result.stdout | default('NULL') }} , {{ priv_result.stdout | default('NULL') }} , {{ setup_result.stdout | default('NULL') }}" >> /tmp/pingcheck.csv;
+        echo "{{ ansible_host }} , {{ group_names }} , {{ ansible_facts['os_family'] }} , {{ raw_result.stdout | default('NULL') }} , {{ priv_result.stdout | default('NULL') }} , {{ setup_result.stdout | default('NULL') }}" >> /tmp/pingcheck.csv;
       delegate_to: localhost
       ignore_errors: true
 
