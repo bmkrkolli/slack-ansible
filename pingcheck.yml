@@ -74,7 +74,7 @@
 
     - debug: 
         msg: >-
-          "{{ ansible_facts['os_family'] }} , {{ group_names }} , {{ ping_module }} , 
+          "{{ ansible_facts['os_family'] }} , {{ group_names }} , 
           {% if ansible_facts['os_family'] != 'Windows' %} ansible_python_version: 
           {{ setup_result.ansible_facts.ansible_python.version_info }} , ansible_python_version: 
           {{ setup_result.ansible_facts.ansible_python.executable }}
