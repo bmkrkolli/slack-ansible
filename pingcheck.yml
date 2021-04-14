@@ -43,7 +43,7 @@
 
     - name: Check Setup
       setup:
-        filter: ansible_powershell_version
+        filter: 'ansible_powershell_*'
       changed_when: false
       register: setup_result
       ignore_errors: true
