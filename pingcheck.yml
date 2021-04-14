@@ -2,7 +2,7 @@
 # This Playbook Checks Ping Result of Node
 - hosts: all
   gather_facts: true
-  gather_subset: "!all"
+#  gather_subset: "!all"
   ignore_errors: true
   ignore_unreachable: true
   tasks:
@@ -43,7 +43,7 @@
 
     - name: Check Setup
       setup:
-        filter: ansible_python_version
+        filter: "{{ (ansible_facts['os_family'] != 'Windows') | ternary('ansible_python_version', 'ansible_powershell_version') }}"
       changed_when: false
       register: setup_result
       ignore_errors: true
@@ -56,7 +56,7 @@
       when: '"ping" in ping_result and ping_result.ping=="pong"'
       ignore_errors: true
 
-    - name: Unable to reach Node
+    - name: Unable to Ping Node
       set_fact:
         host_reachable: false
         job_msg: >-
@@ -64,7 +64,7 @@
       when: '"unreachable" in ping_result and ping_result.unreachable'
       ignore_errors: true
 
-    - name: Unable to reach Node
+    - name: Unable to reach Node(raw)
       set_fact:
         host_reachable: false
         job_msg: >-
@@ -72,8 +72,8 @@
       when: raw_result.unreachable
       ignore_errors: true
 
-    - debug: msg="{{ ansible_facts['os_family'] }} , {{ ping_module }}"
+    - debug: msg="{{ ansible_facts['os_family'] }} , {{ group_names }} , {{ ping_module }} , {{ setup_result }} , "
       ignore_errors: true
-    - debug: var=group_names
-      ignore_errors: true
+#    - debug: var=group_names
+#      ignore_errors: true
               
