@@ -107,7 +107,7 @@
           {% if ansible_facts['os_family'] != 'Windows' %} python_version: 
           {{ setup_result.ansible_facts.ansible_python.version_info }} , python_executable: 
           {{ setup_result.ansible_facts.ansible_python.executable }}
-          {% else %} powershell_version: {{ setup_result.ansible_facts.ansible_powershell_version }} {% endif %}"
+          {% else %} powershell_version: {{ setup_result.ansible_facts.ansible_powershell_version }} {% endif %} , {{ hostvars }} "
       ignore_errors: true
 #    - debug: var=group_names
 #      ignore_errors: true
