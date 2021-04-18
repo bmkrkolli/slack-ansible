@@ -103,7 +103,7 @@
 
     - debug: 
         msg: >-
-          "{{ hostvars['{{ item }}']['ansible_facts']['os_family'] }} , {{ group_names }} , 
+          "{{ hostvars[{{ item }}]['setup_result']['ansible_facts']['ansible_powershell_version'] }} , {{ group_names }} , 
           {% if ansible_facts['os_family'] != 'Windows' %} python_version: 
           {{ setup_result.ansible_facts.ansible_python.version_info }} , python_executable: 
           {{ setup_result.ansible_facts.ansible_python.executable }}
