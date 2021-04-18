@@ -108,8 +108,8 @@
           {{ setup_result.ansible_facts.ansible_python.version_info }} , python_executable: 
           {{ setup_result.ansible_facts.ansible_python.executable }}
           {% else %} powershell_version: {{ setup_result.ansible_facts.ansible_powershell_version }} {% endif %} , {{ item }} "
-      with_items: 
-        - hosts
+      with_inventory_hostnames:
+        - all
       ignore_errors: true
 #    - debug: var=group_names
 #      ignore_errors: true
