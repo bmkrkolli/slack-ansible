@@ -103,12 +103,11 @@
 
     - debug: 
         msg: >-
-          {{ hostvars[item].setup_result.ansible_facts.ansible_powershell_version }} , {{ group_names }} , 
-          {% if ansible_facts['os_family'] != 'Windows' %} python_version: 
-          {{ setup_result.ansible_facts.ansible_python.version_info }} , python_executable: 
-          {{ setup_result.ansible_facts.ansible_python.executable }}
-          {% else %} powershell_version: {{ setup_result.ansible_facts.ansible_powershell_version }} {% endif %} , {{ item }} 
+          {{ item }} , {{ hostvars[item].ansible_facts.os_family }} ,  {{ hostvars[item].ansible_facts.group_names }} , {{ hostvars[item].priv_result.stdout | default('NULL') }} ,
+          {% if hostvars[item].ansible_facts.os_family != 'Windows' %} Python {{ hostvars[item].setup_result.ansible_facts.ansible_python.version_info }}
+          {% else %} Powershell {{ hostvars[item].setup_result.ansible_facts.ansible_powershell_version }} {% endif %} 
       with_inventory_hostnames: "{{ ansible_limit }}"
+      run_once: true
       ignore_errors: true
 #    - debug: var=group_names
 #      ignore_errors: true
