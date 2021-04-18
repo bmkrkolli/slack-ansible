@@ -109,7 +109,8 @@
           {{ setup_result.ansible_facts.ansible_python.executable }}
           {% else %} powershell_version: {{ setup_result.ansible_facts.ansible_powershell_version }} {% endif %} , {{ item }} "
       with_inventory_hostnames:
-        - all
+        - windows
+        - linux
       ignore_errors: true
 #    - debug: var=group_names
 #      ignore_errors: true
