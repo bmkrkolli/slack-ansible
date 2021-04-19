@@ -72,7 +72,7 @@
       when: raw_result.unreachable
       ignore_errors: true
 
-    - name: Format Output
+    - name: Touch Report.csv
       file:
         state: touch
         path: /tmp/pingreport.csv
@@ -81,15 +81,24 @@
       run_once: true
       ignore_errors: true
 
-    - name: Format Output
-      shell: >-
-          echo "{{ item }} , {{ hostvars[item].group_names }} , {{ hostvars[item].ansible_facts.os_family | default('NULL') }} , 
+    - name: Update Report.csv
+      lineinfile: 
+        path: /tmp/pingreport.csv
+        line: >-
+          {{ item }} , {{ hostvars[item].group_names }} , {{ hostvars[item].ansible_facts.os_family | default('NULL') }} , 
           {{ hostvars[item].raw_result.stdout | default('NULL') }} , {{ hostvars[item].priv_result.stdout | default('NULL') }} , 
           {% if hostvars[item].ansible_facts.os_family != 'Windows' %} 
           Python {{ hostvars[item].setup_result.ansible_facts.ansible_python.version_info | default('NULL') }}
-          {% else %} Powershell {{ hostvars[item].setup_result.ansible_facts.ansible_powershell_version | default('NULL') }} {% endif %}" >> /tmp/pingreport.csv;
-          cat /tmp/pingreport.csv; 
+          {% else %} Powershell {{ hostvars[item].setup_result.ansible_facts.ansible_powershell_version | default('NULL') }} {% endif %}
+        insertafter: EOF
       with_inventory_hostnames: "{{ ansible_limit }}"
+      run_once: true
+      delegate_to: localhost
+      ignore_errors: true
+
+    - name: Print Report.csv
+      shell: cat /tmp/pingreport.csv; 
+      changed_when: false
       run_once: true
       delegate_to: localhost
       ignore_errors: true
