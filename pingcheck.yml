@@ -73,18 +73,24 @@
       ignore_errors: true
 
     - name: Format Output
-      debug:
-        msg: >-
-          {{ item }} , {{ hostvars[item].group_names }} , {{ hostvars[item].ansible_facts.os_family | default('NULL') }} , 
+      file:
+        state: touch
+        path: /tmp/pingreport.csv
+        mode: '0755'
+      delegate_to: localhost
+      run_once: true
+      ignore_errors: true
+
+    - name: Format Output
+      shell: >-
+          "echo {{ item }} , {{ hostvars[item].group_names }} , {{ hostvars[item].ansible_facts.os_family | default('NULL') }} , 
           {{ hostvars[item].raw_result.stdout | default('NULL') }} , {{ hostvars[item].priv_result.stdout | default('NULL') }} , 
           {% if hostvars[item].ansible_facts.os_family != 'Windows' %} 
           Python {{ hostvars[item].setup_result.ansible_facts.ansible_python.version_info | default('NULL') }}
-          {% else %} Powershell {{ hostvars[item].setup_result.ansible_facts.ansible_powershell_version | default('NULL') }} {% endif %} 
+          {% else %} Powershell {{ hostvars[item].setup_result.ansible_facts.ansible_powershell_version | default('NULL') }} {% endif %}" >> /tmp/pingreport.csv;
+          cat /tmp/pingreport.csv; 
       with_inventory_hostnames: "{{ ansible_limit }}"
-      changed_when: false
-      register: format_result
       delegate_to: localhost
-      run_once: true
       ignore_errors: true
 
     - name: Set facts for event acknowledgement
@@ -99,7 +105,11 @@
         token: "{{ slack_token }}"
         attachments:
           - text: >- 
-              "{{ format_result.msg }}"
+              {{ item }} , {{ hostvars[item].group_names }} , {{ hostvars[item].ansible_facts.os_family | default('NULL') }} , 
+              {{ hostvars[item].raw_result.stdout | default('NULL') }} , {{ hostvars[item].priv_result.stdout | default('NULL') }} , 
+              {% if hostvars[item].ansible_facts.os_family != 'Windows' %} 
+              Python {{ hostvars[item].setup_result.ansible_facts.ansible_python.version_info | default('NULL') }}
+              {% else %} Powershell {{ hostvars[item].setup_result.ansible_facts.ansible_powershell_version | default('NULL') }} {% endif %} 
             title: Launched {{ tower_job_id }}
         channel: "automation"
         domain: "app.slack.com"
