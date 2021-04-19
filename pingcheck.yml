@@ -63,8 +63,8 @@
         line: >-
           {{ item }} , {{ hostvars[item].group_names }} , 
           {{ hostvars[item].ansible_facts.os_family | default('NULL') }} , 
-          {{ hostvars[item].raw_result.stdout | default('NULL') | replace('\n','') }} , 
-          {{ hostvars[item].priv_result.stdout | default('NULL') | replace('\n','') }} , 
+          {{ hostvars[item].raw_result.stdout | replace('\n','') }} , 
+          {{ hostvars[item].priv_result.stdout | replace('\n','') }} , 
           {% if hostvars[item].ansible_facts.os_family != 'Windows' %} 
           Python {{ hostvars[item].setup_result.ansible_facts.ansible_python.version_info | default('NULL') }}
           {% else %} Powershell {{ hostvars[item].setup_result.ansible_facts.ansible_powershell_version | default('NULL') }} {% endif %}
