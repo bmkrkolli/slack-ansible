@@ -59,7 +59,7 @@
       lineinfile: 
         path: /tmp/pingreport.csv
         line: >-
-          {{ group_names | default('NULL') }} ,
+          {{ inventory_hostname }} , {{ group_names | default('NULL') }} ,
           {{ ansible_facts.os_family | default('NULL') }} ,
           {{ raw_result.stdout | default('NULL') | regex_replace('(\r\n)',' , ') | regex_replace('(\n)','') }}
           {{ priv_result.stdout | default('NULL') | regex_replace('(\r\n)','') | regex_replace('(\n)','') }} ,
@@ -75,7 +75,8 @@
       lineinfile: 
         path: /tmp/pingreport.csv
         line: >-
-          Connectivity Failed , {{ raw_result.msg | default('NULL') | regex_replace('(\r\n)',' , ') | regex_replace('(\n)','') }}
+          {{ inventory_hostname }} , Connectivity Failed ,
+          {{ raw_result.msg | default('NULL') | regex_replace('(\r\n)',' , ') | regex_replace('(\n)','') }}
         insertafter: EOF
       delegate_to: localhost
       when: 'raw_result.unreachable'
@@ -109,7 +110,7 @@
       ignore_errors: true
 
     - debug: 
-        msg: "{{ report.stdout }} , {{ inventory_hostname }}"
+        msg: "{{ report.stdout }}"
       ignore_errors: true
 #    - debug: var=hostvars[inventory_hostname]
 #      ignore_errors: true
