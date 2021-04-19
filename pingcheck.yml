@@ -99,7 +99,7 @@
         token: "{{ slack_token }}"
         attachments:
           - text: >- 
-              "{{ format_result }}"
+              "{{ format_result.results }}"
             title: Launched {{ tower_job_id }}
         channel: "automation"
         domain: "app.slack.com"
