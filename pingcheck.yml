@@ -11,7 +11,6 @@
         host_reachable: false
         host_exist: true
         ping_module: "{{ (ansible_facts['os_family'] != 'Windows') | ternary('ping', 'win_ping') }}"
-        shell_module: "{{ (ansible_facts['os_family'] != 'Windows') | ternary('shell', 'win_shell') }}"
         method: "{{ (ansible_facts['os_family'] != 'Windows') | ternary('sudo', 'runas') }}"
         isadmin: >-
           $u=whoami;$wid=[System.Security.Principal.WindowsIdentity]::GetCurrent();
