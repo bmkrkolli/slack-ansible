@@ -111,6 +111,7 @@
 
     - debug: 
         msg: "{{ report.stdout }}"
+      run_once: true
       ignore_errors: true
 #    - debug: var=hostvars[inventory_hostname]
 #      ignore_errors: true
