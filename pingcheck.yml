@@ -72,11 +72,19 @@
       when: raw_result.unreachable
       ignore_errors: true
 
-    - name: insert status into csv
-      copy:
-        content: "{{ raw_result.stdout | default('NULL') }} , {{ group_names }} , {{ ansible_facts['os_family'] }} , {{ priv_result.stdout | default('NULL') }} , {{ setup_result.stdout | default('NULL') }}"
-        dest: /tmp/pingcheck.csv
+    - name: Format Output
+      debug:
+        msg: >-
+          {{ item }} , {{ hostvars[item].group_names }} , {{ hostvars[item].ansible_facts.os_family | default('NULL') }} , 
+          {{ hostvars[item].raw_result.stdout | default('NULL') }} , {{ hostvars[item].priv_result.stdout | default('NULL') }} , 
+          {% if hostvars[item].ansible_facts.os_family != 'Windows' %} 
+          Python {{ hostvars[item].setup_result.ansible_facts.ansible_python.version_info | default('NULL') }}
+          {% else %} Powershell {{ hostvars[item].setup_result.ansible_facts.ansible_powershell_version | default('NULL') }} {% endif %} 
+      with_inventory_hostnames: "{{ ansible_limit }}"
+      changed_when: false
+      register: format_result
       delegate_to: localhost
+      run_once: true
       ignore_errors: true
 
     - name: Set facts for event acknowledgement
@@ -91,21 +99,21 @@
         token: "{{ slack_token }}"
         attachments:
           - text: >- 
-              "{{ raw_result.stdout | default('NULL') }} , {{ group_names }} , {{ ansible_facts['os_family'] }} , {{ priv_result.stdout | default('NULL') }} , 
-              {% if ansible_facts['os_family'] != 'Windows' %} python_version: {{ setup_result.ansible_facts.ansible_python.version_info }} 
-              {% else %} powershell_version: {{ setup_result.ansible_facts.ansible_powershell_version }} {% endif %}"
+              "{{ format_result }}"
             title: Launched {{ tower_job_id }}
         channel: "automation"
         domain: "app.slack.com"
-      register: post_out
+      run_once: true
       delegate_to: localhost
       ignore_errors: true
 
     - debug: 
         msg: >-
-          {{ item }} , {{ hostvars[item].ansible_facts.os_family }} ,  {{ hostvars[item].group_names }} , {{ hostvars[item].priv_result.stdout | default('NULL') }} ,
-          {% if hostvars[item].ansible_facts.os_family != 'Windows' %} Python {{ hostvars[item].setup_result.ansible_facts.ansible_python.version_info }}
-          {% else %} Powershell {{ hostvars[item].setup_result.ansible_facts.ansible_powershell_version }} {% endif %} 
+          {{ item }} , {{ hostvars[item].group_names }} , {{ hostvars[item].ansible_facts.os_family | default('NULL') }} , 
+          {{ hostvars[item].raw_result.stdout | default('NULL') }} , {{ hostvars[item].priv_result.stdout | default('NULL') }} , 
+          {% if hostvars[item].ansible_facts.os_family != 'Windows' %} 
+          Python {{ hostvars[item].setup_result.ansible_facts.ansible_python.version_info | default('NULL') }}
+          {% else %} Powershell {{ hostvars[item].setup_result.ansible_facts.ansible_powershell_version | default('NULL') }} {% endif %} 
       with_inventory_hostnames: "{{ ansible_limit }}"
       run_once: true
       ignore_errors: true
