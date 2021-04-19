@@ -81,7 +81,7 @@
           Connectivity Failed , {{ raw_result.msg | default('NULL') | regex_replace('(\r\n)',' , ') | regex_replace('(\n)','') }}
         insertafter: EOF
       delegate_to: localhost
-      when: '"unreachable" in ping_result and ping_result.unreachable'
+      when: '"unreachable" in raw_result and raw_result.unreachable'
       ignore_errors: true
 
     - name: Print Report.csv
