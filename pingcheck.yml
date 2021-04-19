@@ -48,16 +48,6 @@
       register: setup_result
       ignore_errors: true
 
-    - name: set output fact
-      set_fact:
-        op: >-
-          "{{ item }} , {{ hostvars[item].group_names }} , {{ hostvars[item].ansible_facts.os_family | default('NULL') }} , 
-          {{ hostvars[item].raw_result.stdout | default('NULL') }} , {{ hostvars[item].priv_result.stdout | default('NULL') }} , 
-          {% if hostvars[item].ansible_facts.os_family != 'Windows' %} 
-          Python {{ hostvars[item].setup_result.ansible_facts.ansible_python.version_info | default('NULL') }}
-          {% else %} Powershell {{ hostvars[item].setup_result.ansible_facts.ansible_powershell_version | default('NULL') }} {% endif %}"
-      ignore_errors: true
-
     - name: Touch Report.csv
       file:
         state: touch
@@ -70,7 +60,14 @@
     - name: Update Report.csv
       lineinfile: 
         path: /tmp/pingreport.csv
-        line: "{{ op | replace('\r\n','')}}"
+        line: >-
+          {{ item }} , {{ hostvars[item].group_names }} , 
+          {{ hostvars[item].ansible_facts.os_family | default('NULL') }} , 
+          {{ hostvars[item].raw_result.stdout | default('NULL') | replace('\r\n','') }} , 
+          {{ hostvars[item].priv_result.stdout | default('NULL') | replace('\r\n','') }} , 
+          {% if hostvars[item].ansible_facts.os_family != 'Windows' %} 
+          Python {{ hostvars[item].setup_result.ansible_facts.ansible_python.version_info | default('NULL') }}
+          {% else %} Powershell {{ hostvars[item].setup_result.ansible_facts.ansible_powershell_version | default('NULL') }} {% endif %}
         insertafter: EOF
       with_inventory_hostnames: "{{ ansible_limit }}"
       run_once: true
