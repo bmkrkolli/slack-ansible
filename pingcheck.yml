@@ -68,7 +68,7 @@
           {% else %}Powershell {{ setup_result.ansible_facts.ansible_powershell_version | default('NULL') }} {% endif %}
         insertafter: EOF
       delegate_to: localhost
-      when: '"ping" in ping_result and ping_result.ping=="pong"'
+      when: 'ping_result.ping=="pong"'
       ignore_errors: true
 
     - name: Update unreachable Report.csv
@@ -78,7 +78,7 @@
           Connectivity Failed , {{ raw_result.msg | default('NULL') | regex_replace('(\r\n)',' , ') | regex_replace('(\n)','') }}
         insertafter: EOF
       delegate_to: localhost
-      when: '"unreachable" in raw_result and raw_result.unreachable'
+      when: 'raw_result.unreachable'
       ignore_errors: true
 
     - name: Print Report.csv
@@ -110,8 +110,7 @@
 
     - debug: 
         msg: "{{ report.stdout }} , {{ inventory_hostname }}"
-      run_once: true
       ignore_errors: true
-    - debug: var=hostvars[inventory_hostname]
-      ignore_errors: true
+#    - debug: var=hostvars[inventory_hostname]
+#      ignore_errors: true
               
