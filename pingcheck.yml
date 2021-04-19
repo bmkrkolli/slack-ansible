@@ -8,8 +8,6 @@
   tasks:
     - name: Set facts
       set_fact:
-        host_reachable: false
-        host_exist: true
         ping_module: "{{ (ansible_facts['os_family'] != 'Windows') | ternary('ping', 'win_ping') }}"
         method: "{{ (ansible_facts['os_family'] != 'Windows') | ternary('sudo', 'runas') }}"
         isadmin: >-
@@ -111,16 +109,9 @@
       ignore_errors: true
 
     - debug: 
-        msg: >-
-          {{ item }} , {{ hostvars[item].group_names }} , {{ hostvars[item].ansible_facts.os_family | default('NULL') }} ,
-          {{ hostvars[item].raw_result.stdout | default('NULL') | regex_replace('(\r\n)',' , ') | regex_replace('(\n)','') }}
-          {{ hostvars[item].priv_result.stdout | default('NULL') | regex_replace('(\r\n)','') | regex_replace('(\n)','') }} ,
-          {% if hostvars[item].ansible_facts.os_family != 'Windows' %}
-          Python {{ hostvars[item].setup_result.ansible_facts.ansible_python.version_info | default('NULL') }}
-          {% else %}Powershell {{ hostvars[item].setup_result.ansible_facts.ansible_powershell_version | default('NULL') }} {% endif %} 
-      with_inventory_hostnames: "{{ ansible_limit }}"
+        msg: "{{ report.stdout }} , {{ inventory_hostname }}"
       run_once: true
       ignore_errors: true
-#    - debug: var=group_names
-#      ignore_errors: true
+    - debug: var=hostvars[inventory_hostname]
+      ignore_errors: true
               
