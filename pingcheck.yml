@@ -17,7 +17,7 @@
           $u=whoami;$wid=[System.Security.Principal.WindowsIdentity]::GetCurrent();
           $prp=new-object System.Security.Principal.WindowsPrincipal($wid);
           $adm=[System.Security.Principal.WindowsBuiltInRole]::Administrator;
-          $IsAdmin=$prp.IsInRole($adm);if($isadmin){write-host "Administrator";}else{write-host $u;}
+          $IsAdmin=$prp.IsInRole($adm);if($isadmin){write-host Administrator}else{write-host $u}
       ignore_errors: true
 
     - name: Validate connection and credentials
