@@ -83,13 +83,14 @@
 
     - name: Format Output
       shell: >-
-          "echo {{ item }} , {{ hostvars[item].group_names }} , {{ hostvars[item].ansible_facts.os_family | default('NULL') }} , 
+          echo "{{ item }} , {{ hostvars[item].group_names }} , {{ hostvars[item].ansible_facts.os_family | default('NULL') }} , 
           {{ hostvars[item].raw_result.stdout | default('NULL') }} , {{ hostvars[item].priv_result.stdout | default('NULL') }} , 
           {% if hostvars[item].ansible_facts.os_family != 'Windows' %} 
           Python {{ hostvars[item].setup_result.ansible_facts.ansible_python.version_info | default('NULL') }}
           {% else %} Powershell {{ hostvars[item].setup_result.ansible_facts.ansible_powershell_version | default('NULL') }} {% endif %}" >> /tmp/pingreport.csv;
           cat /tmp/pingreport.csv; 
       with_inventory_hostnames: "{{ ansible_limit }}"
+      run_once: true
       delegate_to: localhost
       ignore_errors: true
 
