@@ -109,6 +109,19 @@
       delegate_to: localhost
       ignore_errors: true
 
+    - name: Send Report to slack
+      command: curl "https://slack.com/api/files.upload"
+          -F token='{{ slack_token }}'
+          -F channels='automation' -F title='ping'
+          -F file=@'/tmp/pingreport.csv'
+      register: response
+      args:
+        warn: false
+      changed_when: false
+      run_once: true
+      delegate_to: localhost
+      ignore_errors: true
+
     - debug: 
         msg: "{{ report.stdout }}"
       run_once: true
