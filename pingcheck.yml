@@ -64,8 +64,8 @@
           {{ raw_result.stdout | default('NULL') | regex_replace('(\r\n)',' , ') | regex_replace('(\n)','') }}
           {{ priv_result.stdout | default('NULL') | regex_replace('(\r\n)','') | regex_replace('(\n)','') }} ,
           {% if ansible_facts.os_family != 'Windows' %}
-          Python {{ setup_result.ansible_facts.ansible_python.version_info | default('NULL') }}
-          {% else %}Powershell {{ setup_result.ansible_facts.ansible_powershell_version | default('NULL') }} {% endif %}
+          Python {{ setup_result.ansible_facts.ansible_python.version_info | default('NULL') | regex_replace('(,)','.') }}
+          {% else %}Powershell {{ setup_result.ansible_facts.ansible_powershell_version | default('NULL') | regex_replace('(,)','.') }} {% endif %}
         insertafter: EOF
       delegate_to: localhost
       when: 'ping_result.ping=="pong"'
