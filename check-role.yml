@@ -41,7 +41,7 @@
         EXPRESSION={$_.ConverttoDateTime($_.lastbootuptime)}};
         $ut = (get-date) - $lbt.BT; $apls = get-localuser administrator;
         Write-Host "Hostname: " $hn ;
-        Write-Host "OS: " $os; 
+        Write-Host "OS: " $osn; 
         Write-Host "UpTime: " $lbt.BT "(" $ut ")";
         Write-Host "ActivePowerPlan: " $app ;
         Write-Host "LocalAdminPwdLastSet: " $apls.PasswordLastSet;
