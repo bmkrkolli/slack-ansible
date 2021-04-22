@@ -40,11 +40,11 @@
         $app = powercfg /GETACTIVESCHEME; $lbt=$os | select @{LABEL='BT'; 
         EXPRESSION={$_.ConverttoDateTime($_.lastbootuptime)}};
         $ut = (get-date) - $lbt.BT; $apls = get-localuser administrator;
-        Write-Host "Hostname: " $hn ;
-        Write-Host "OS: " $osn; 
-        Write-Host "UpTime: " $lbt.BT "(" $ut ")";
-        Write-Host "ActivePowerPlan: " $app ;
-        Write-Host "LocalAdminPwdLastSet: " $apls.PasswordLastSet;
+        Write-Host "Hostname" : " $hn ";
+        Write-Host "OS" : " $osn "; 
+        Write-Host "UpTime": " $lbt.BT "(" $ut ")"";
+        Write-Host "ActivePowerPlan": " $app ";
+        Write-Host "LocalAdminPwdLastSet": " $apls.PasswordLastSet ";
         get-wmiobject -class win32_quickfixengineering;
       changed_when: false
       register: winl1_info
