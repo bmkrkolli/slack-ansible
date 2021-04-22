@@ -36,14 +36,15 @@
 
     - name: "Windows Level 1 Diagnosis"
       win_shell: >-
-        $hn = hostname; $app = powercfg /GETACTIVESCHEME;
-        $os = gwmi Win32_OperatingSystem; $osn = $os.Caption;
-        $lbt= $os | select @{LABEL='BT'; 
+        $hn = hostname; $os = gwmi Win32_OperatingSystem; $osn = $os.Caption;
+        $app = powercfg /GETACTIVESCHEME; $lbt=$os | select @{LABEL='BT'; 
         EXPRESSION={$_.ConverttoDateTime($_.lastbootuptime)}};
-        $ut = (get-date) - $lbt.BT; 
-        $apls = get-localuser administrator; $alpsv = $apls.PasswordLastSet;
-        Write-Host "Hostname: " $hn ", OS: " $os ", UpTime: " $lbt.BT ( $ut );
-        Write-Host "ActivePowerPlan: " $app ", LocalAdminPwdLastSet: " $aplsv;
+        $ut = (get-date) - $lbt.BT; $apls = get-localuser administrator;
+        Write-Host "Hostname: " $hn ;
+        Write-Host "OS: " $os; 
+        Write-Host "UpTime: " $lbt.BT "(" $ut ")";
+        Write-Host "ActivePowerPlan: " $app ;
+        Write-Host "LocalAdminPwdLastSet: " $apls.PasswordLastSet;
         get-wmiobject -class win32_quickfixengineering;
       changed_when: false
       register: winl1_info
