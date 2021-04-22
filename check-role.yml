@@ -34,3 +34,19 @@
       win_shell: 'New-PSDrive -Name "Q" -PSProvider "FileSystem" -Root "\\8.9.9.16\utils";Get-PSDrive Q;copy-item -path "Q:\wmi_exporter-0.4.3-amd64.msi" -destination "C:\temp\wmi_exporter-0.4.3-amd64.msi";Remove-PSDrive Q;'
       ignore_errors: true
 
+    - name: "Windows Level 1 Diagnosis"
+      win_shell: >-
+        $hn = hostname; $app = powercfg /GETACTIVESCHEME;
+        $os = gwmi Win32_OperatingSystem; $osn = $os.Caption;
+        $lbt= $os | select @{LABEL='BT'; 
+        EXPRESSION={$_.ConverttoDateTime($_.lastbootuptime)}};
+        $ut = (get-date) - $lbt.BT; 
+        $apls = get-localuser administrator; $alpsv = $apls.PasswordLastSet;
+        Write-Host "Hostname: " $hn ", OS: " $os ", UpTime: " $lbt.BT ( $ut );
+        Write-Host "ActivePowerPlan: " $app ", LocalAdminPwdLastSet: " $aplsv;
+        get-wmiobject -class win32_quickfixengineering;
+      changed_when: false
+      register: winl1_info
+      when: os_type == "Windows"
+      ignore_errors: true
+
