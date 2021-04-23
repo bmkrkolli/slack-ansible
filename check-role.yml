@@ -49,13 +49,13 @@
           - SecurityUpdates
           - CriticalUpdates
           - UpdateRollups
-        state: searched
+        state: installed
       changed_when: false
       register: updates
       ignore_errors: true
 
     - name: Check Local Administrator via win_shell
-      win_shell: $apls = get-localuser administrator; $apls.PasswordLastSet;
+      win_shell: $apls=get-localuser administrator; $apls.PasswordLastSet;
       changed_when: false
       register: lcladm
       when: os_type == "Windows"
@@ -77,7 +77,7 @@
       ignore_errors: true
 
     - debug: 
-        msg: "LastBootUpTime: {{ lastboot }} , UpTime: {{ uptime }} hrs"
+        msg: "LastBootUpTime: {{ lastboot }} , UpTime: {{ uptime }} hrs or {{ (uptime | int)/24 }} days "
       ignore_errors: true
 
     - debug: 
