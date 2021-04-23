@@ -2,6 +2,8 @@
 # This is a Master Playbook that executes command on node
 # Author: B M Krishna Reddy Kolli
 - hosts: "{{ IPAddress }}"
+  gather_facts: true
+  gather_subset: "all"
   vars:
     os_type: "{{ ansible_facts['os_family'] }}"
     command: "{{ Command }}"
@@ -51,3 +53,14 @@
       when: os_type == "Windows"
       ignore_errors: true
 
+    - debug: 
+        msg: "Hostname: {{ ansible_facts['ansible_hostname'] }}"
+      ignore_errors: true
+
+    - debug: 
+        msg: "OS: {{ ansible_facts['ansible_os_name'] }}"
+      ignore_errors: true
+
+    - debug: 
+        msg: "LastBootUpTime: {{ ansible_facts['ansible_lastboot'] }} , UpTime: {{ ansible_facts['ansible_uptime_seconds'] }}"
+      ignore_errors: true
