@@ -9,7 +9,7 @@
     hostname: "{{ ansible_facts['hostname'] }}"
     os_name: "{{ ansible_facts['os_name'] }}"
     lastboot: "{{ ansible_facts['lastboot'] }}"
-    uptime: "{{ ansible_facts['uptime_seconds'] }}"
+    uptime: "{{ ((ansible_facts['uptime_seconds'] | int)/60)/60 }}"
     command: "{{ Command }}"
   tasks:
     - name: "Windows"
@@ -48,6 +48,16 @@
     - name: get power plan
       win_power_plan:
         name: nothing
+      changed_when: false
+      register: powerplan
+      ignore_errors: true
+
+    - name: Check Local Administrator
+      win_user:
+        name: administrator
+        state: query
+      changed_when: false
+      register: localadmin
       ignore_errors: true
 
     - debug: 
@@ -59,5 +69,9 @@
       ignore_errors: true
 
     - debug: 
-        msg: "LastBootUpTime: {{ lastboot }} , UpTime: {{ uptime }}"
+        msg: "LastBootUpTime: {{ lastboot }} , UpTime: {{ uptime }} hrs"
+      ignore_errors: true
+
+    - debug: 
+        msg: "PowerPlan: {{ powerplan.all_available_plans }}"
       ignore_errors: true
