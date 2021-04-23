@@ -2,7 +2,20 @@
 # This is a Master Playbook that executes command on node
 # Author: B M Krishna Reddy Kolli
 - hosts: localhost
-  vars:
-    command: "{{ Command }}"
+  connection: local
+  gather_facts: false
   tasks:
-    - debug: var=command
+    - name: Set facts for tasks playbooks from alert info
+      set_fact:
+        problem: "{{ Problem }}"
+        host_name: "{{ Host }}"
+        host_ip: "{{ IPAddress }}"
+        stime: "{{ StartTime }}"
+        item: "{{ Item }}"
+        key: "{{ Key }}"
+        op_data: "{{ OperationalData }}"
+        severity: "{{ Severity }}"
+        eid: "{{ EventID }}"
+        tid: "{{ TriggerID }}"
+        eurl: "{{ URL }}"
+      ignore_errors: true
