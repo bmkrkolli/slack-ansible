@@ -28,13 +28,6 @@
       when: os_type == "Windows"
       ignore_errors: true
 
-    - name: Check Local Administrator via win_shell
-      win_shell: $apls = get-localuser administrator; $apls.PasswordLastSet;
-      changed_when: false
-      register: lcladm
-      when: os_type == "Windows"
-      ignore_errors: true
-
     - name: Get Power Plan
       win_power_plan:
         name: nothing
@@ -50,7 +43,7 @@
       register: localadmin
       ignore_errors: true
 
-    - name: Check Windows Updated Installed
+    - name: Check Windows Updates Available
       win_updates:
         category_names:
           - SecurityUpdates
@@ -59,6 +52,20 @@
         state: searched
       changed_when: false
       register: updates
+      ignore_errors: true
+
+    - name: Check Local Administrator via win_shell
+      win_shell: $apls = get-localuser administrator; $apls.PasswordLastSet;
+      changed_when: false
+      register: lcladm
+      when: os_type == "Windows"
+      ignore_errors: true
+
+    - name: Check Updates Installed
+      win_shell: get-wmiobject -class win32_quickfixengineering;
+      changed_when: false
+      register: upins
+      when: os_type == "Windows"
       ignore_errors: true
 
     - debug: 
