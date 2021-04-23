@@ -43,12 +43,11 @@
       register: localadmin
       ignore_errors: true
 
-    - name: Check Windows Updates Available
+    - name: Check Windows Updates Installed
       win_updates:
         category_names:
           - SecurityUpdates
           - CriticalUpdates
-          - UpdateRollups
         state: installed
       changed_when: false
       register: updates
