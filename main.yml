@@ -1,0 +1,10 @@
+---
+# This is a Master Playbook that executes command on node
+# Author: B M Krishna Reddy Kolli
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - debug: 
+        msg: "{{ item.ApplicationName }} , {{ item.Type }} , {{ item.Limit }} , {{ item.StartTime }} , {{ item.EndTime }} , {{ item.Action }} , {{ item.Attributes }} , {{ item.Wait }}"
+      with_items: "{{ Tasks }}"
