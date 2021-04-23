@@ -54,13 +54,13 @@
       ignore_errors: true
 
     - debug: 
-        msg: "Hostname: {{ ansible_facts['ansible_hostname'] }}"
+        msg: "Hostname: {{ ansible_facts['hostname'] }}"
       ignore_errors: true
 
     - debug: 
-        msg: "OS: {{ ansible_facts['ansible_os_name'] }}"
+        msg: "OS: {{ ansible_facts['os_name'] }}"
       ignore_errors: true
 
     - debug: 
-        msg: "LastBootUpTime: {{ ansible_facts['ansible_lastboot'] }} , UpTime: {{ ansible_facts['ansible_uptime_seconds'] }}"
+        msg: "LastBootUpTime: {{ ansible_facts['lastboot'] }} , UpTime: {{ ansible_facts['uptime_seconds'] }}"
       ignore_errors: true
