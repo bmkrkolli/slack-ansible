@@ -28,18 +28,6 @@
       when: os_type == "Windows"
       ignore_errors: true
 
-    - name: "Windows file copy"
-      win_copy: 
-        src: \\8.9.9.16\utils\wmi_exporter-0.4.3-amd64.msi
-        dest: c:\temp\wmi_exporter-0.4.3-amd64.msi
-      register: cp
-      when: os_type == "Windows"
-      ignore_errors: true
-
-    - name: mount Q
-      win_shell: 'New-PSDrive -Name "Q" -PSProvider "FileSystem" -Root "\\8.9.9.16\utils";Get-PSDrive Q;copy-item -path "Q:\wmi_exporter-0.4.3-amd64.msi" -destination "C:\temp\wmi_exporter-0.4.3-amd64.msi";Remove-PSDrive Q;'
-      ignore_errors: true
-
     - name: "Windows Level 1 Diagnosis"
       win_shell: >-
         $hn = hostname; $os = gwmi Win32_OperatingSystem; $osn = $os.Caption;
@@ -55,6 +43,11 @@
       changed_when: false
       register: winl1_info
       when: os_type == "Windows"
+      ignore_errors: true
+
+    - name: get power plan
+      win_power_plan:
+        name: nothing
       ignore_errors: true
 
     - debug: 
