@@ -28,24 +28,14 @@
       when: os_type == "Windows"
       ignore_errors: true
 
-    - name: "Windows Level 1 Diagnosis"
-      win_shell: >-
-        $hn = hostname; $os = gwmi Win32_OperatingSystem; $osn = $os.Caption;
-        $app = powercfg /GETACTIVESCHEME; $lbt=$os | select @{LABEL='BT'; 
-        EXPRESSION={$_.ConverttoDateTime($_.lastbootuptime)}};
-        $ut = (get-date) - $lbt.BT; $apls = get-localuser administrator;
-        Write-Host "Hostname: " $hn ;
-        Write-Host "OS: " $osn; 
-        Write-Host "UpTime: " $lbt.BT "(" $ut ")";
-        Write-Host "ActivePowerPlan: " $app ;
-        Write-Host "LocalAdminPwdLastSet: " $apls.PasswordLastSet;
-        get-wmiobject -class win32_quickfixengineering;
+    - name: Check Local Administrator via win_shell
+      win_shell: $apls = get-localuser administrator; $apls.PasswordLastSet;
       changed_when: false
-      register: winl1_info
+      register: lcladm
       when: os_type == "Windows"
       ignore_errors: true
 
-    - name: get power plan
+    - name: Get Power Plan
       win_power_plan:
         name: nothing
       changed_when: false
@@ -58,6 +48,17 @@
         state: query
       changed_when: false
       register: localadmin
+      ignore_errors: true
+
+    - name: Check Windows Updated Installed
+      win_updates:
+        category_names:
+          - SecurityUpdates
+          - CriticalUpdates
+          - UpdateRollups
+        state: searched
+      changed_when: false
+      register: updates
       ignore_errors: true
 
     - debug: 
@@ -74,4 +75,8 @@
 
     - debug: 
         msg: "PowerPlan: {{ powerplan.all_available_plans }}"
+      ignore_errors: true
+
+    - debug: 
+        msg: "LocalAdminPwdLastSet: {{ lcladm.stdout }}"
       ignore_errors: true
