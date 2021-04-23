@@ -6,6 +6,10 @@
   gather_subset: "all"
   vars:
     os_type: "{{ ansible_facts['os_family'] }}"
+    hostname: "{{ ansible_facts['hostname'] }}"
+    os_name: "{{ ansible_facts['os_name'] }}"
+    lastboot: "{{ ansible_facts['lastboot'] }}"
+    uptime: "{{ ansible_facts['uptime_seconds'] }}"
     command: "{{ Command }}"
   tasks:
     - name: "Windows"
@@ -54,13 +58,13 @@
       ignore_errors: true
 
     - debug: 
-        msg: "Hostname: {{ ansible_facts['hostname'] }}"
+        msg: "Hostname: {{ hostname }}"
       ignore_errors: true
 
     - debug: 
-        msg: "OS: {{ ansible_facts['os_name'] }}"
+        msg: "OS: {{ os_name }}"
       ignore_errors: true
 
     - debug: 
-        msg: "LastBootUpTime: {{ ansible_facts['lastboot'] }} , UpTime: {{ ansible_facts['uptime_seconds'] }}"
+        msg: "LastBootUpTime: {{ lastboot }} , UpTime: {{ uptime }}"
       ignore_errors: true
