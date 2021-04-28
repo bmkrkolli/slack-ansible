@@ -61,7 +61,7 @@
       ignore_errors: true
 
     - name: Check Updates Installed
-      win_shell: get-wmiobject -class win32_quickfixengineering | convertto-csv;
+      win_shell: get-wmiobject -class win32_quickfixengineering | convertto-json;
       changed_when: false
       register: upins
       when: os_type == "Windows"
